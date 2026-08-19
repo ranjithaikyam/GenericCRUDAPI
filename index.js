@@ -9,9 +9,8 @@ console.log("Routes Loaded:", genericRoutes);
 const app = express();
 
 app.use(express.json());
-app.use("/api", genericRoutes);
 
-const PORT = process.env.PORT || 3001;
+app.use("/api", genericRoutes);
 
 app.get("/", (req, res) => {
   res.send("Generic CRUD API Working");
@@ -20,12 +19,14 @@ app.get("/", (req, res) => {
 app.get("/test-db", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()");
+
     res.json({
       success: true,
       serverTime: result.rows[0]
     });
   } catch (err) {
     console.error(err);
+
     res.status(500).json({
       success: false,
       error: err.message
@@ -33,6 +34,4 @@ app.get("/test-db", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+module.exports = app;
